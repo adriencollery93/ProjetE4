@@ -2,10 +2,12 @@ package m2lmedical;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -15,10 +17,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 
-
-public class InterfaceG  {
+public class InterfaceG {
 	
-
 	private JFrame f = new JFrame();
 	
 	private JMenuBar menuBar = new JMenuBar();
@@ -45,11 +45,14 @@ public class InterfaceG  {
 	private JTextField cp = new JTextField();
 	private JLabel cpLabel = new JLabel("Saisir un code postal :");
 	
+	private JPanel control = new JPanel();
+	private JButton okBouton = new JButton("OK");
+	
 	public InterfaceG()
 	{
 		f.setTitle("Medical");
 	    f.setSize(600, 800);
-	    f.setLayout(null);
+	    f.setLayout(new FlowLayout());
 	    f.setLocationRelativeTo(null);//Nous demandons maintenant à notre objet de se positionner au centre
 	    f.setResizable(false);
 	    f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
@@ -72,17 +75,16 @@ public class InterfaceG  {
 		{
 		      public void actionPerformed(ActionEvent e)
 		      {
-		    	  
 		    	  formAjoutSportif();
 		    	  f.revalidate();
 		      }            
-		    });
+		   });
 	}
 	
 	public void formAjoutSportif()
 	{
 	    panNom.setBackground(Color.white);
-	    panNom.setPreferredSize(new Dimension(220, 60));
+	    panNom.setPreferredSize(new Dimension(220, 100));
 	    panNom.setBorder(BorderFactory.createTitledBorder("Nom du sportif"));
 	    nom.setPreferredSize(new Dimension(100, 25));	    
 	    panNom.add(nomLabel);
@@ -90,7 +92,7 @@ public class InterfaceG  {
 	    f.add(panNom);
 	    
 	    panPrenom.setBackground(Color.white);
-	    panPrenom.setPreferredSize(new Dimension(220, 60));
+	    panPrenom.setPreferredSize(new Dimension(220, 100));
 	    panPrenom.setBorder(BorderFactory.createTitledBorder("Prénom du sportif"));
 	    prenom.setPreferredSize(new Dimension(100, 25));	    
 	    panPrenom.add(prenomLabel);
@@ -98,7 +100,7 @@ public class InterfaceG  {
 	    f.add(panPrenom);
 	    
 	    panAdresse.setBackground(Color.white);
-	    panAdresse.setPreferredSize(new Dimension(220, 60));
+	    panAdresse.setPreferredSize(new Dimension(220, 100));
 	    panAdresse.setBorder(BorderFactory.createTitledBorder("Adresse du sportif"));
 	    adresse.setPreferredSize(new Dimension(100, 25));	    
 	    panAdresse.add(adresseLabel);
@@ -106,7 +108,7 @@ public class InterfaceG  {
 	    f.add(panAdresse);
 	    
 	    panVille.setBackground(Color.white);
-	    panVille.setPreferredSize(new Dimension(220, 60));
+	    panVille.setPreferredSize(new Dimension(220, 100));
 	    panVille.setBorder(BorderFactory.createTitledBorder("Ville du sportif"));
 	    ville.setPreferredSize(new Dimension(100, 25));	    
 	    panVille.add(villeLabel);
@@ -114,13 +116,38 @@ public class InterfaceG  {
 	    f.add(panVille);
 	    
 	    panCp.setBackground(Color.white);
-	    panCp.setPreferredSize(new Dimension(220, 60));
+	    panCp.setPreferredSize(new Dimension(220, 100));
 	    panCp.setBorder(BorderFactory.createTitledBorder("Code postal du sportif"));
 	    cp.setPreferredSize(new Dimension(100, 25));	    
 	    panCp.add(cpLabel);
 	    panCp.add(cp);
 	    f.add(panCp);
-	}
+	
+	    
+	    okBouton.addActionListener(new ActionListener()
+	    {
+	    	public void actionPerformed(ActionEvent e) 
+	    	{   
+	    	
+	    		Connect sportifInfo = new Connect(nom.getText(), prenom.getText(), adresse.getText(), cp.getText(), ville.getText());
+	    		sportifInfo.insertSportif(nom.getText(), prenom.getText(), adresse.getText(), cp.getText(), ville.getText());
+	    		JLabel sportifInfoStr = new JLabel(sportifInfo.toString());
+	    		f.add(sportifInfoStr);
+	    		
+	    		f.remove(panNom);
+	    		f.remove(panPrenom);
+	    		f.remove(panAdresse);
+	    		f.remove(panVille);
+	    		f.remove(panCp);
+	    		f.remove(control);
+	    		f.revalidate();
+	    	}	
+	    });
+	    
+	    f.add(control);
+	    control.add(okBouton);
+	}	    
+
 	
 	public static void main(String[] args) {
 	
