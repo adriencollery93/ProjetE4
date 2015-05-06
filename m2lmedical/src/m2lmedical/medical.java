@@ -11,13 +11,13 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 
 public class medical {
-	
+		
 	public static byte[] encrypter(final String message, SecretKey cle)
 	throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
 		Cipher cipher = Cipher.getInstance("DESede");// getInstance() = Renvoyer une instance de l'objet pour un algorithme particulier dont l'implémentation est celle fournie par le fournisseur précisé
 		cipher.init(Cipher.ENCRYPT_MODE, cle); //Initialiser la classe pour le mode de fonctionnement précisé (Cipher.ENCRYPT_MODE et Cipher.DECRYPT_MODE)
 		byte[] donnees = message.getBytes(); // getBytes() = encode un jeu de caractères en une séquence d'octets
-	
+		
 		return cipher.doFinal(donnees); //Ajouter la dernière partie des données à traiter et générer le résultat
 	}
 	 
@@ -47,15 +47,18 @@ public class medical {
 	
 	public static void main(String[] args) {
 		final String message = "Mon message à traiter d'urgence ";
-		
 		try {
+
 			SecretKey cle = cleCrypt(); 
-			System.out.println("cle:" + cle.getEncoded());
+			System.out.println("cle: " + BytesToHex.bytesToHex(cle.getEncoded()));
 
-			byte[] enc = encrypter(message, cle);
+			String enc = BytesToHex.bytesToHex(encrypter(message, cle));
 			System.out.println("texte encrypte : " + enc);
-
-			String dec = decrypter(enc, cle);
+			
+			byte[] encB = BytesToHex.hexStringToByteArray(enc);
+			System.out.println("Conversion: "+ encB);
+			
+			String dec = decrypter(encB, cle);
 			System.out.println("texte decrypte : " + dec);
 		
 		} catch (Exception e) {
@@ -63,3 +66,5 @@ public class medical {
 		}
 	}
 }
+
+
